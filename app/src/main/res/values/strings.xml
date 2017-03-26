@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Twessfer</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_login">Login</string>
+    <string name="action_timeline">Timeline</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_pin">Enter pin</string>
+</resources>
