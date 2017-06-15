@@ -13,9 +13,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TweetAdapter extends ArrayAdapter<Row> {
+/**
+ * \brief TweetAdapter implements a specific ArrayAdapter to
+ * display Tweets.
+ */
 
-    public TweetAdapter(Context context, ArrayList<Row> rows) {
+public class TweetAdapter extends ArrayAdapter<Tweet> {
+
+    public TweetAdapter(Context context, ArrayList<Tweet> rows) {
         super(context, R.layout.activity_listview, rows);
     }
 
@@ -23,7 +28,7 @@ public class TweetAdapter extends ArrayAdapter<Row> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        Row row = getItem(position);
+        Tweet row = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {

@@ -12,20 +12,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
-import android.widget.EditText;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
@@ -33,7 +32,7 @@ import twitter4j.auth.RequestToken;
 interface TweetCallback {
 
     void onUserLists( ArrayList<twitter4j.UserList> lists);
-    void postRows(ArrayList<Row> rows);
+    void postRows(ArrayList<Tweet> rows);
     int currentPage();
     void postAuthenticationUrl(String url);
     void postRequestToken(RequestToken token);
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements TweetCallback,  P
     }
 
     @Override
-    public void postRows(ArrayList<Row> rows) {
+    public void postRows(ArrayList<Tweet> rows) {
 
         closeProgressDialog();
         if (rows.size() > 0) {
@@ -153,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements TweetCallback,  P
         CONSUMER_SECRET =  getString(R.string.CONSUMER_SECRET);
 
         context = this;
-        ArrayList<Row> rows = new ArrayList<>();
+        ArrayList<Tweet> rows = new ArrayList<>();
         ListView listView = (ListView) findViewById(R.id.tweet_list);
         adapter = new TweetAdapter(context, rows);
         listView.setAdapter(adapter);
@@ -161,10 +160,7 @@ public class MainActivity extends AppCompatActivity implements TweetCallback,  P
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
-            public void onScrollStateChanged(AbsListView view,
-                                             int scrollState) { // TODO Auto-generated method stub
-
-            }
+            public void onScrollStateChanged(AbsListView view,int scrollState) {}
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
@@ -177,6 +173,21 @@ public class MainActivity extends AppCompatActivity implements TweetCallback,  P
                     else
                        new HomeTimeline((TweetCallback)context).execute(twitter);
                 }
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                Intent intent = new Intent(context, DisplayStatusActivity.class);
+                Tweet currentTweet = adapter.getItem(pos);
+                Globals.getInstance().setCurrentTweet(currentTweet);
+                startActivity(intent);
+
+                Log.v("long clicked","pos: " + pos);
+
+                return true;
             }
         });
 

@@ -11,15 +11,30 @@ import java.util.List;
 
 import twitter4j.Twitter;
 
-public abstract class Timeline extends AsyncTask<Twitter, Row, Boolean> {
+/** \brief Class to retrieve tweets.
+ *
+ *  This class provides functionality to retrieve
+ *  states form a Timeline.
+ */
+
+public abstract class Timeline extends AsyncTask<Twitter, Tweet, Boolean> {
 
     private TweetCallback tCallback;
-    private ArrayList<Row> items = new ArrayList<>();
+    private ArrayList<Tweet> items = new ArrayList<>();
 
+    /**
+     * Constructor
+     * @param tcb Instance to the Main activity to notify actions.
+     */
     public Timeline(TweetCallback tcb) {
         tCallback = tcb;
     }
 
+    /**
+     * Read the avatar of the status line.
+     * @param user avatar
+     * @return avatar as Bitmap
+     */
     private Bitmap getAvatar(twitter4j.User user) {
 
         int w = 32, h = 32;
@@ -53,10 +68,10 @@ public abstract class Timeline extends AsyncTask<Twitter, Row, Boolean> {
             List<twitter4j.Status> stati = getStati(twitter[0],tCallback.currentPage());
 
             for (twitter4j.Status status : stati) {
-                Row newRow = new Row();
-                newRow.status = status;
-                newRow.avatar = getAvatar(status.getUser());
-                publishProgress(newRow);
+                Tweet tweet = new Tweet();
+                tweet.status = status;
+                tweet.avatar = getAvatar(status.getUser());
+                publishProgress(tweet);
             }
 
             res = true;
@@ -66,7 +81,7 @@ public abstract class Timeline extends AsyncTask<Twitter, Row, Boolean> {
     }
 
     @Override
-    protected void onProgressUpdate(Row... rows) {
+    protected void onProgressUpdate(Tweet... rows) {
 
         items.add(rows[0]);
     }
