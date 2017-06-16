@@ -35,11 +35,11 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_listview, parent, false);
         }
 
-        twitter4j.User user = row.status.getUser();
         String statusText = row.status.getText();
         TextView label = (TextView) convertView.findViewById(R.id.label);
         label.setText(statusText);
 
+        twitter4j.User user = row.status.getUser();
         String name = user.getName();
         String sName = "@"+user.getScreenName();
 
