@@ -1,4 +1,8 @@
 app/src/main/res/values/secret_strings.xml
+app/
+build/
 *.lock
 *.bin
 *.jar
+.gradle/
+.idea/
